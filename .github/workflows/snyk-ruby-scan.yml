@@ -1,4 +1,5 @@
 name: Snyk Ruby Scan
+
 on:
   push:
     branches:
@@ -20,7 +21,7 @@ jobs:
       - name: Set up Ruby
         uses: ruby/setup-ruby@v1
         with:
-          ruby-version: 3.0 # Adjust based on your project's Ruby version
+          ruby-version: 3.0 # Adjust this based on your project's Ruby version
 
       # Install dependencies
       - name: Install dependencies
@@ -38,6 +39,13 @@ jobs:
           SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
         run: snyk auth $SNYK_TOKEN
 
-      # Run Snyk scan
+      # Run Snyk scan and generate report
       - name: Run Snyk Test
-        run: snyk test --all-projects
+        run: snyk test --all-projects --json-file-output=snyk_report.json
+
+      # Upload Snyk scan results as an artifact
+      - name: Upload Snyk Report
+        uses: actions/upload-artifact@v3
+        with:
+          name: snyk-report
+          path: snyk_report.json
