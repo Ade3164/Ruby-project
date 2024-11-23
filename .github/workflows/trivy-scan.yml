@@ -17,17 +17,28 @@ jobs:
       - name: Check out code
         uses: actions/checkout@v3
 
-      # Step 2: Install Trivy
+      # Step 2: Install Ruby and Bundler
+      - name: Install Ruby and Bundler
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y ruby-full
+          gem install bundler
+
+      # Step 3: Install dependencies (optional, but ensures lock file is generated)
+      - name: Install dependencies (bundle install)
+        run: bundle install
+
+      # Step 4: Install Trivy
       - name: Install Trivy
         run: |
           curl -sfL https://raw.githubusercontent.com/aquasecurity/trivy/main/contrib/install.sh | sh -s -- -b /usr/local/bin
 
-      # Step 3: Run Trivy to Scan Gemfile.lock
+      # Step 5: Run Trivy Scan
       - name: Run Trivy Scan
         run: |
-          trivy fs Gemfile.lock --exit-code 1 --severity HIGH,CRITICAL > trivy.log
+          trivy fs . --exit-code 1 --severity HIGH,CRITICAL
 
-      # Step 4: Upload the scan results
+      # Step 6: Upload Trivy Report
       - name: Upload Trivy Report
         uses: actions/upload-artifact@v3
         with:
