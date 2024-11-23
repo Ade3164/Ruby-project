@@ -22,7 +22,7 @@ jobs:
         run: |
           sudo apt-get update
           sudo apt-get install -y ruby-full
-          gem install bundler
+          sudo gem install bundler
 
       # Step 3: Install dependencies (optional, but ensures lock file is generated)
       - name: Install dependencies (bundle install)
