@@ -1,0 +1,35 @@
+GEM
+  remote: https://rubygems.org/
+  specs:
+    rails (7.0.0)
+    ...
+    sinatra (2.2.0)
+    nokogiri (1.14.2)
+    ...
+    paperclip (5.2.1)
+      activemodel (>= 4.2.0)
+      activesupport (>= 4.2.0)
+      ...
+
+DEPENDENCIES
+  bcrypt
+  bcrypt-ruby
+  carrierwave
+  capistrano
+  delayed_job
+  dotenv-rails
+  factory_bot
+  grape
+  httparty
+  kaminari
+  mimemagic
+  nokogiri
+  omniauth
+  paperclip (~> 5.2.1)
+  pry
+  pundit
+  rails
+  rspec
+  sidekiq
+  simplecov
+  sinatra
