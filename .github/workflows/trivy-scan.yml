@@ -1,4 +1,4 @@
-name: Trivy Scan
+name: Trivy Ruby Scan
 
 on:
   push:
@@ -22,9 +22,10 @@ jobs:
         run: |
           curl -sfL https://raw.githubusercontent.com/aquasecurity/trivy/main/contrib/install.sh | sh -s -- -b /usr/local/bin
 
-      # Step 3: Run a Trivy File System Scan
+      # Step 3: Run Trivy to Scan Gemfile.lock
       - name: Run Trivy Scan
-        run: trivy fs . --exit-code 1 --severity HIGH,CRITICAL
+        run: |
+          trivy fs Gemfile.lock --exit-code 1 --severity HIGH,CRITICAL > trivy.log
 
       # Step 4: Upload the scan results
       - name: Upload Trivy Report
