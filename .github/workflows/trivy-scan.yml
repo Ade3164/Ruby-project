@@ -20,27 +20,11 @@ jobs:
       # Step 2: Install Trivy
       - name: Install Trivy
         run: |
-          VERSION=$(curl -s https://api.github.com/repos/aquasecurity/trivy/releases/latest | grep tag_name | cut -d '"' -f 4)
-          ARCH=$(uname -m)
-          OS=$(uname -s)
-          
-          if [[ "$ARCH" == "x86_64" ]]; then
-            ARCH="64bit"
-          elif [[ "$ARCH" == "arm64" ]]; then
-            ARCH="ARM64"
-          else
-            echo "Unsupported architecture: $ARCH"
-            exit 1
-          fi
-          
-          wget https://github.com/aquasecurity/trivy/releases/download/${VERSION}/trivy_${VERSION}_${OS}-${ARCH}.tar.gz
-          tar zxvf trivy_${VERSION}_${OS}-${ARCH}.tar.gz
-          sudo mv trivy /usr/local/bin/
+          curl -sfL https://raw.githubusercontent.com/aquasecurity/trivy/main/contrib/install.sh | sh -s -- -b /usr/local/bin
 
-      # Step 3: Run a scan on the repository
-      - name: Run Trivy File System Scan
-        run: |
-          trivy fs . --exit-code 1 --severity HIGH,CRITICAL | tee trivy.log
+      # Step 3: Run a Trivy File System Scan
+      - name: Run Trivy Scan
+        run: trivy fs . --exit-code 1 --severity HIGH,CRITICAL
 
       # Step 4: Upload the scan results
       - name: Upload Trivy Report
