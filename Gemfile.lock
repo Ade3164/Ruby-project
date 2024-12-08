@@ -1,34 +1,24 @@
-GEM
-  remote: https://rubygems.org/
-  specs:
-    rails (7.0.0)
-    ...
-    sinatra (2.2.0)
-    nokogiri (1.14.2)
-    ...
-    paperclip (5.2.1)
-      activemodel (>= 4.2.0)
-      activesupport (>= 4.2.0)
-      ...
+source "https://rubygems.org"
 
-DEPENDENCIES
-  bcrypt
-  bcrypt-ruby
-  carrierwave
-  capistrano
-  delayed_job
-  dotenv-rails
-  factory_bot
-  grape
-  httparty
-  kaminari
-  mimemagic
-  omniauth
-  paperclip (~> 5.2.1)
-  pry
-  pundit
-  rails
-  rspec
-  sidekiq
-  simplecov
-  sinatra
+gem 'rails'
+gem 'sinatra'
+gem 'nokogiri', '~> 1.14.2'  # Ensure compatibility with other dependencies
+gem 'rspec'
+gem 'sidekiq'
+gem 'capistrano'
+gem 'carrierwave'
+gem 'httparty'
+gem 'pundit'
+gem 'delayed_job'
+gem 'grape'
+gem 'simplecov'
+gem 'bcrypt'  # Keep only bcrypt
+gem 'omniauth'
+gem 'paperclip', '~> 5.2.1'
+gem 'factory_bot'
+gem 'pry'
+gem 'kaminari'
+gem 'dotenv-rails'
+gem 'mimemagic'
+
+# Removed bcrypt-ruby as it is redundant and deprecated.
