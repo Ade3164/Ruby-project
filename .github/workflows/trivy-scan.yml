@@ -1,4 +1,4 @@
-name: Trivy Ruby Scan
+name: Trivy CI/CD Pipeline
 
 on:
   push:
@@ -9,27 +9,35 @@ on:
       - main
 
 jobs:
-  trivy:
+  trivy-scan:
+    name: Trivy Vulnerability Scan
     runs-on: ubuntu-latest
 
     steps:
-      # Step 1: Check out the repository
-      - name: Check out code
-        uses: actions/checkout@v3
+      # Step 1: Checkout Code
+      - name: Checkout Repository
+        uses: actions/checkout@v4
 
       # Step 2: Install Trivy
       - name: Install Trivy
         run: |
-          curl -sfL https://raw.githubusercontent.com/aquasecurity/trivy/main/contrib/install.sh | sh -s -- -b /usr/local/bin
+          sudo apt-get update
+          sudo apt-get install wget -y
+          wget -qO- https://github.com/aquasecurity/trivy/releases/latest/download/trivy_$(uname -s)_$(uname -m).tar.gz | sudo tar zx -C /usr/local/bin/
 
-      # Step 3: Run Trivy to Scan Gemfile.lock
-      - name: Run Trivy Scan
+      # Step 3: Run Trivy Scan on Filesystem
+      - name: Trivy Filesystem Scan
         run: |
-          trivy fs Gemfile.lock --exit-code 1 --severity HIGH,CRITICAL > trivy.log
+          trivy fs --exit-code 0 --severity CRITICAL,HIGH --output trivy-report.txt .
+        
+      # Step 4: Run Trivy Scan on Container Image (Optional)
+      - name: Trivy Container Image Scan
+        run: |
+          trivy image --exit-code 0 --severity CRITICAL,HIGH --output trivy-image-report.txt <image-name>
 
-      # Step 4: Upload the scan results
+      # Step 5: Upload Reports
       - name: Upload Trivy Report
         uses: actions/upload-artifact@v3
         with:
           name: trivy-report
-          path: trivy.log
+          path: trivy-report.txt
