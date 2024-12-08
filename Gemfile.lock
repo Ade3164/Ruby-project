@@ -23,7 +23,6 @@ DEPENDENCIES
   httparty
   kaminari
   mimemagic
-  nokogiri
   omniauth
   paperclip (~> 5.2.1)
   pry
